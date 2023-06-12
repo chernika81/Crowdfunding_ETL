@@ -110,3 +110,72 @@ campaign_df.head()
 
 # Check the datatypes
 campaign_df.dtypes
+
+
+# Format the launched_date and end_date columns to datetime format
+from datetime import datetime as dt
+campaign_df["launched_date"] = pd.to_datetime(campaign_df["launched_date"]).dt.strftime('%Y-%m-%d') 
+campaign_df["end_date"] = pd.to_datetime(campaign_df["end_date"]).dt.strftime('%Y-%m-%d')
+campaign_df.head()
+
+
+
+# Added line. Not in the starter code. Changing the launched_date and end_date columns Dtype to datetime
+# This step was not required
+campaign_df["launched_date"] = pd.to_datetime(campaign_df["launched_date"])
+campaign_df["end_date"] = pd.to_datetime(campaign_df["end_date"])
+campaign_df.info()
+
+
+# Merge the campaign_df with the category_df on the "category" column and 
+# the subcategory_df on the "subcategory" column.
+campaign_merged_df = pd.merge(pd.merge(campaign_df, category_df, on='category', how='left'), subcategory_df, on='subcategory', how='left')
+
+campaign_merged_df.tail(10)
+
+# Drop unwanted columns
+campaign_cleaned = campaign_merged_df.drop(columns=['staff_pick', 'spotlight', 'category & sub-category', 'category', 'subcategory'])
+campaign_cleaned.head()
+
+
+
+# Export the DataFrame as a CSV file. 
+campaign_cleaned.to_csv("Resources/campaign.csv", index=False)
+
+
+# Read the data into a Pandas DataFrame. Use the `header=2` parameter when reading in the data
+## I am using header=3 to make it easier to get the correct result without going through some additional formating steps
+contact_info_df = pd.read_excel('Resources/contacts.xlsx', header=3)
+contact_info_df.head()
+
+
+
+# Iterate through the contact_info_df and convert each row to a dictionary.
+import json
+dict_values = []
+for i, row in contact_info_df.iterrows():
+    row_value = row[0]
+    row_conv = json.loads(row_value)
+    
+
+# Print out the list of values for each row.
+    list_value = [x for y, x in row_conv.items()]
+    dict_values.append(list_value)
+    
+print(dict_values)
+
+
+# Create a contact_info DataFrame and add each list of values, i.e., each row 
+# to the 'contact_id', 'name', 'email' columns.
+contact_info = pd.DataFrame(dict_values, columns=['contact_id', 'name', 'email'])
+
+contact_info.head()
+
+
+# Create a "first"name" and "last_name" column with the first and last names from the "name" column. 
+contact_info[['first_name','last_name']] = contact_info["name"].str.split(' ', expand=True)
+
+# Drop the contact_name column
+contacts_df_1 = contact_info.drop(columns=['name'])
+contacts_df_1.head(10)
+
