@@ -96,3 +96,17 @@ subcategory_df.to_csv("Resources/subcategory.csv", index=False)
 # Create a copy of the crowdfunding_info_df DataFrame name campaign_df. 
 campaign_df = crowdfunding_info_df.copy()
 campaign_df.head()
+
+
+# Rename the blurb, launched_at, and deadline columns.
+campaign_df = campaign_df.rename(columns={"blurb": "description", "launched_at": "launched_date", "deadline": "end_date"}, errors="raise")
+campaign_df.head()
+
+
+# Convert the goal and pledged columns to a `float` data type.
+campaign_df = campaign_df.astype({'goal': 'float', 'pledged': 'float'})
+campaign_df.head()
+
+
+# Check the datatypes
+campaign_df.dtypes
