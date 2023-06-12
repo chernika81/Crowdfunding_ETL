@@ -84,3 +84,15 @@ subcategory_df = pd.DataFrame(subcategory_1)
 
 category_df
 
+subcategory_df
+
+
+# Export categories_df and subcategories_df as CSV files.
+category_df.to_csv("Resources/category.csv", index=False)
+
+subcategory_df.to_csv("Resources/subcategory.csv", index=False)
+
+
+# Create a copy of the crowdfunding_info_df DataFrame name campaign_df. 
+campaign_df = crowdfunding_info_df.copy()
+campaign_df.head()
